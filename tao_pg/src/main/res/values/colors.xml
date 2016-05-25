@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4caf50</color>
+    <color name="colorPrimaryDark">#F9BD8A</color>
+    <color name="colorAccent">#F9BD8A</color>
+    <color name="gay">#98e1dfa7</color>
+    <color name="b_green">#25B5A3</color>
+    <color name="bar_color">#F9BD8A</color>
+</resources>

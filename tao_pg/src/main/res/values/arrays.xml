@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="news_type">
+        <item>index</item><!--热点头条-->
+        <item>ant</item><!--消费预警-->
+        <item>law</item><!--政策法规-->
+        <item>defend</item><!--质量曝光-->
+        <item>fs</item><!--食品安全-->
+        <item>ccy</item><!--测评公告-->
+        <item>quabk</item><!--质量百科-->
+        <item>video</item><!--视频曝光-->
+        <item>focus</item><!--专题专栏-->
+    </array>
+
+    <array name="news_type_name">
+        <item>热点头条</item><!---->
+        <item>消费预警</item><!---->
+        <item>政策法规</item><!---->
+        <item>质量曝光</item><!---->
+        <item>食品安全</item><!---->
+        <item>测评公告</item><!---->
+        <item>质量百科</item><!---->
+        <item>视频曝光</item><!---->
+        <item>专题专栏</item><!---->
+    </array>
+
+    <string name="user_info">user_info</string>
+</resources>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_news_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="@dimen/dp_4"
+        android:text="@string/search"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/sp_17"
+        />
+
+    <TextView
+        android:id="@+id/tv_news_digest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_news_title"
+        android:layout_margin="@dimen/dp_4"
+        android:text="kdjkdjkdjkdjkdjkd"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/sp_19"/>
+
+
+    <TextView
+        android:id="@+id/tv_news_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_news_digest"
+        android:layout_margin="@dimen/dp_4"
+        android:text="2016-4-19 12:50:04"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="@dimen/sp_14"
+        />
+
+    <TextView
+        android:id="@+id/tv_news_valuation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv_news_time"
+        android:layout_below="@+id/tv_news_digest"
+        android:layout_margin="@dimen/dp_4"
+        android:layout_toRightOf="@+id/tv_news_time"
+        android:text="@string/str_pl"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="@dimen/sp_14"
+        />
+
+    <ImageView
+        android:id="@+id/iv_news_image"
+        android:layout_width="@dimen/dp_96"
+        android:layout_height="@dimen/dp_64"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/dp_4"
+        android:scaleType="fitXY"/>
+</RelativeLayout>

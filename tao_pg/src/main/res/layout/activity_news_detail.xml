@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/white"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_news_title"
+        style="@style/style_tv_title"/>
+
+    <!--进度条-->
+    <com.github.lzyzsd.circleprogress.CircleProgress
+        android:id="@+id/circle_progress"
+        android:layout_width="@dimen/dp_48"
+        android:layout_height="@dimen/dp_48"
+        android:layout_gravity="center"
+        app:circle_finished_color="@color/colorAccent"
+        app:circle_progress="0"
+        app:circle_unfinished_color="@color/b_green"/>
+
+    <!--新闻详情的webView页-->
+    <WebView
+        android:id="@+id/web_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"/>
+
+    <!--底部的评论组-->
+    <LinearLayout
+        android:id="@+id/bottom_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp_4">
+
+        <EditText
+            android:id="@+id/et_discussion_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"/>
+
+        <Button
+            android:id="@+id/btn_discussion_submit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="发表"/>
+
+        <TextView
+            android:id="@+id/tv_discussion_counts"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@android:color/holo_red_light"
+            android:text="评论数"/>
+    </LinearLayout>
+</LinearLayout>

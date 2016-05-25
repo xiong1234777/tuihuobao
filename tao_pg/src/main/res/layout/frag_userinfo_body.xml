@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+
+    <RelativeLayout
+        style="@style/rl_userinfo_body">
+
+        <TextView
+            style="@style/tv_userinfo_body"
+            android:text="我的投诉"/>
+
+        <TextView
+            style="@style/tv_userinfo_body_right"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/rl_userinfo_body">
+
+        <TextView
+            style="@style/tv_userinfo_body"
+            android:text="代理投诉"
+            />
+
+        <TextView
+            style="@style/tv_userinfo_body_right"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/rl_userinfo_body">
+
+        <TextView
+            style="@style/tv_userinfo_body"
+            android:text="我的吐槽"
+            />
+
+        <TextView
+            style="@style/tv_userinfo_body_right"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/rl_userinfo_body">
+
+        <TextView
+            style="@style/tv_userinfo_body"
+            android:text="安全设置"
+            />
+
+        <TextView
+            style="@style/tv_userinfo_body_right"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/rl_userinfo_body">
+
+        <TextView
+            style="@style/tv_userinfo_body"
+            android:text="收获地址"
+            />
+
+        <TextView
+            style="@style/tv_userinfo_body_right"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/rl_userinfo_body">
+
+        <TextView
+            style="@style/tv_userinfo_body"
+            android:text="意见反馈"
+            />
+
+        <TextView
+            style="@style/tv_userinfo_body_right"
+            />
+    </RelativeLayout>
+</LinearLayout>

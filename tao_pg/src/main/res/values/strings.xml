@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">退货宝</string>
+    <string name="action_settings">退出程序</string>
+    <string name="navigation_example">待开发</string>
+    <string name="navigation_my_blog">待开发</string>
+    <string name="navigation_about">待开发</string>
+    <string name="drawer_close">关闭</string>
+    <string name="drawer_open">打开</string>
+    <string name="load">loading</string>
+
+    <string name="fetch_news_key_list">list</string>
+    <string name="fetch_news_key_status">status</string>
+    <string name="fetch_empty_tip">返回的数据为空</string>
+    <string name="fetch_eror_tip">网络数据请求有误</string>
+    <string name="search">搜索</string>
+    <string name="str_pl">ssss</string>
+    <string name="tpg_host">http://www.taobpg.com/newsinterface/</string>
+    <string name="telinfo">{
+    "list": [
+        {
+            "name": "市长电话",
+            "number": "12345"
+        },
+        {
+            "name": "工商举报",
+            "number": "12315"
+        },
+        {
+            "name": "价格举报",
+            "number": "12358"
+        },
+        {
+            "name": "消费者投诉中心",
+            "number": "12315"
+        },
+        {
+            "name": "环境保护局",
+            "number": "3513256"
+        },
+        {
+            "name": "国土资源执法监察大队",
+            "number": "3245149"
+        },
+        {
+            "name": "食品安全举报电话",
+            "number": "2999322"
+        },
+        {
+            "name": "司法鉴定管理科",
+            "number": "3254288"
+        }
+    ]
+}</string>
+</resources>
