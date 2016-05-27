@@ -47,4 +47,7 @@ public class UrlHelper {
   public final static String LOGIN = NET_HOST +"indexinterface/login";
   //注册的url
   public final static String REG = NET_HOST+"indexinterface/register";
+  //二维码登录接口
+  public final static String ERWEIMA_LOGIN = NET_HOST+"indexinterface/qrcodelogin";
+  public final static String test = NET_HOST+"indexinterface/test";
 }

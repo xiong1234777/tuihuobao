@@ -1,5 +1,6 @@
 package comm;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,12 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.xutils.x;
+import butterknife.ButterKnife;
 
 public abstract class BaseFrag<V, T extends BaseP<V>> extends Fragment {
   protected View mRootView = null;
   protected T mPresenter = null;
-
+  protected Dialog mLoading = null;
   //初始化数据
   public abstract void initData(Bundle savedInstanceState);
 
@@ -53,7 +54,9 @@ public abstract class BaseFrag<V, T extends BaseP<V>> extends Fragment {
       //初始化根布局
       mRootView = inflater.inflate(getLayoutId(), null);
 
-      x.view().inject(this,mRootView);
+
+      ButterKnife.bind(this,mRootView);
+
     }
 
     //依赖注解xutils
@@ -77,6 +80,12 @@ public abstract class BaseFrag<V, T extends BaseP<V>> extends Fragment {
     if (mPresenter != null) {
       mPresenter.detachView();
     }
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    ButterKnife.unbind(this);
   }
 
 }

@@ -123,6 +123,16 @@ public class NewsDetailActivity extends BaseActivity {
         XutilsHelper.fetch(params, 1, new MyCallBack<String>() {
 
           @Override
+          public void success(String result) throws JSONException {
+
+          }
+
+          @Override
+          public void fail() {
+
+          }
+
+          @Override
           public void onSuccess(String result) {
             super.onSuccess(result);
             try {

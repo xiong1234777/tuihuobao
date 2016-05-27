@@ -32,7 +32,6 @@ public class NewsPresenter extends BaseP<INewsView> {
   private List<Discussion> mDiscussions = null;
 
 
-
   //获取评论的信息
   public void fetchDisccsions() {
 
@@ -50,7 +49,7 @@ public class NewsPresenter extends BaseP<INewsView> {
 
 
   //做评论
-  public void updateDisccsion(){
+  public void updateDisccsion() {
 
   }
 
@@ -63,60 +62,53 @@ public class NewsPresenter extends BaseP<INewsView> {
     //发送请求
     XutilsHelper.fetch(new RequestParams(UrlHelper.getNewsItemsUrl("taobpg", "123", type, pn)),
             0, new MyCallBack<String>() {
-      
-      @Override
-      public void onSuccess(String result) {
-        super.onSuccess(result);
 
-        if (TextUtils.isEmpty(result)) {
-          return;
-        }
+              @Override
+              public void success(String result) throws JSONException {
+                if (TextUtils.isEmpty(result)) {
+                  return;
+                }
 
-        try {
-          JSONObject obj = new JSONObject(result);
-          int status = obj.getInt("status");
-          
-          if (status == 1) {
-            JSONArray array = obj.getJSONArray("list");
+                JSONObject obj = new JSONObject(result);
+                int status = obj.getInt("status");
 
-            if (mNewsInfos != null) {
-              mNewsInfos.clear();
-            }
+                if (status == 1) {
+                  JSONArray array = obj.getJSONArray("list");
 
-            //获取json
-            mNewsInfos = DataTools.getGosn().fromJson(array.toString(), new
-                    TypeToken<List<NewsInfo>>() {
-                    }.getType());
+                  if (mNewsInfos != null) {
+                    mNewsInfos.clear();
+                  }
 
-            //presenter 绑定后 执行
-            if (isAttached()) {
-              getView().onSuccess(mNewsInfos);
-            }
+                  //获取json
+                  mNewsInfos = DataTools.getGosn().fromJson(array.toString(), new
+                          TypeToken<List<NewsInfo>>() {
+                          }.getType());
+
+                  //presenter 绑定后 执行
+                  if (isAttached()) {
+                    getView().onSuccess(mNewsInfos);
+                  }
 
 
-          } else {
-            if (status == 0) {
-              UiTools.showToast("已经加载到底");
+                } else {
+                  if (status == 0) {
+                    UiTools.showToast("已经加载到底");
 
-            } else {
-              UiTools.showToast("错误码:" + status);
-            }
-            if (isAttached()) {
-              getView().onFail();
-            }
-          }
-        } catch (JSONException e) {
-          e.printStackTrace();
-        }
-      }
+                  } else {
+                    UiTools.showToast("错误码:" + status);
+                  }
+                  if (isAttached()) {
+                    getView().onFail();
+                  }
+                }
+              }
 
-      @Override
-      public void onError(Throwable ex, boolean isOnCallback) {
-        super.onError(ex, isOnCallback);
-        if (isAttached()) {
-          getView().onFail();
-        }
-      }
-    });
+              @Override
+              public void fail() {
+                if (isAttached()) {
+                  getView().onFail();
+                }
+              }
+            });
   }
 }

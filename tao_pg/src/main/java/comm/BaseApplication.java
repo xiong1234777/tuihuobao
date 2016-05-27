@@ -17,6 +17,7 @@ public class BaseApplication extends Application{
     super.onCreate();
     LeakCanary.install(this);
     //xutils
+//    x.app().onCreate();
     x.Ext.init(this);
     x.Ext.setDebug(true);
   }

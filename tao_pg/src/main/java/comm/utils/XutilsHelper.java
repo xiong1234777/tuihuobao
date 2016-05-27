@@ -18,7 +18,11 @@ public class XutilsHelper {
   //doget请求
   public static void fetch(RequestParams params, int type, final MyCallBack
           callBack) {
-    params.setUseCookie(false);
+    params.setUseCookie(true);
+
+    //获取系统的时间
+    UiTools.current_time = System.currentTimeMillis();
+
     if (type == 0) {
       //get
       x.http().get(params, callBack);

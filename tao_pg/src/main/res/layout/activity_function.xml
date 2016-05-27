@@ -33,10 +33,14 @@
             />
 
         <ImageView
+            android:id="@+id/iv_erweima"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="right"/>
+            android:gravity="right"
+            android:clickable="false"
+            android:scaleType="center"
+            android:src="@android:drawable/ic_menu_add"/>
     </LinearLayout>
 
     <android.support.v4.view.ViewPager

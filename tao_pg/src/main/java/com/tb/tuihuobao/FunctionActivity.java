@@ -19,6 +19,7 @@ import com.tb.tuihuobao.login.LogoutState;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
 
 import comm.BaseActivity;
@@ -28,6 +29,7 @@ import comm.utils.MyCallBack;
 import comm.utils.SPFTools;
 import comm.utils.UiTools;
 import comm.utils.XutilsHelper;
+import comm.zxing.activity.CaptureActivity;
 
 /**
  * Created by zxh on 2016/5/17.
@@ -37,17 +39,19 @@ public class FunctionActivity extends BaseActivity {
   private TabLayout mTablayout = null;
   private ViewPager mVpcontent = null;
   private ImageView mImageTel = null;
-
+  private ImageView mImage2 = null;
   private String[] mTabTitles = new String[3];
+
+  private static final int REQUEST_CODE = 1;
 
   @Override
   protected void onCreate(Bundle arg0) {
     super.onCreate(arg0);
     this.setContentView(R.layout.activity_function);
 
-//    String from_id = getIntent().getStringExtra("from_id");
-
-//    if (from_id == null) {
+    //构造一个dialog
+    mLoadDialog = UiTools.UIHelper.getLoadDialog2(this);
+    mLoadDialog.setCanceledOnTouchOutside(false);
 
     //用户名和密码请求一次登录
     final String user_name = SPFTools.queryStr("user_name");
@@ -58,62 +62,65 @@ public class FunctionActivity extends BaseActivity {
 
       RequestParams params = new RequestParams(UrlHelper.LOGIN);
       params.addBodyParameter("account", user_name);
-      params.addBodyParameter("pwd", pwd);
+      params.addBodyParameter("pwd", MD5.GetMD5Code(pwd));
 
       //发送请求
       XutilsHelper.fetch(params, 1, new MyCallBack<String>() {
         @Override
-        public void onSuccess(String result) {
-          super.onSuccess(result);
+        public void success(String result) throws JSONException {
 
-          try {
+          mLoadDialog.dismiss();
 
-            JSONObject jsonObject = new JSONObject(result);
-            int code = jsonObject.getInt("code");
-            String error_report = jsonObject.getString("error_report");
+          JSONObject jsonObject = new JSONObject(result);
+          int code = jsonObject.getInt("code");
+          String error_report = jsonObject.getString("error_report");
 
-            if (code == 1 || code == 4) {
+          if (code == 1 || code == 4) {
 
-              UiTools.showToast("登陆成功");
-              LoginContext.getInstance().setLoginState(new LoginState());
+            UiTools.showToast("登陆成功");
 
-              //储存用户名和密码
-              SPFTools.insertData(new String[]{"user_name", "pwd"}, new String[]{user_name, MD5
-                      .GetMD5Code(pwd)});
-
-              //缓存用户信息到本地
-              SPFTools.insertData(XutilsHelper.getResStr(R.string.user_info), jsonObject.
-                      getJSONObject("user_mes").toString());
-
-            } else {
-              UiTools.showToast("验证失败" + error_report);
-              LoginContext.getInstance().setLoginState(new LogoutState());
-            }
-
-
-          } catch (JSONException e) {
-            UiTools.showToast("数据出现了点小问题");
-            e.printStackTrace();
+            LoginContext.getInstance().setLoginState(new LoginState(), FunctionActivity.this);
+            //缓存用户信息到本地
+            SPFTools.insertData(XutilsHelper.getResStr(R.string.user_info), jsonObject.
+                    getJSONObject("user_mes").toString());
+            mImage2.setClickable(true);
+          } else {
+            UiTools.showToast("验证失败" + error_report);
+            mImage2.setClickable(false);
+            LoginContext.getInstance().setLoginState(new LogoutState(), FunctionActivity.this);
           }
         }
-      });
 
+        @Override
+        public void fail() {
+          mLoadDialog.dismiss();
+        }
+      });
     } else {
-      LoginContext.getInstance().setLoginState(new LogoutState());
+      //注销状态
+      LoginContext.getInstance().setLoginState(new LogoutState(), this);
       finish();
     }
 
 
     //init views
     mTablayout = (TabLayout) findViewById(R.id.tab_layout);
-
     mVpcontent = (ViewPager) findViewById(R.id.vp_content);
-
     mImageTel = (ImageView) findViewById(R.id.iv_tel);
+    mImage2 = (ImageView) findViewById(R.id.iv_erweima);
 
-    mImageTel.setOnClickListener(new View.OnClickListener()
+    //2微码支付
+    mImage2.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        //调用扫描
+        Intent intent = new Intent(FunctionActivity.this, CaptureActivity.class);
+        startActivityForResult(intent, REQUEST_CODE);
+      }
+    });
 
-                                 {
+    //电话的监听事件
+    mImageTel.setOnClickListener(new View.OnClickListener() {
                                    @Override
                                    public void onClick(View v) {
 
@@ -145,7 +152,7 @@ public class FunctionActivity extends BaseActivity {
     //设置适配器
     FunctionFragAdapter adapter = new FunctionFragAdapter(getSupportFragmentManager());
 
-    mVpcontent.setOffscreenPageLimit(1);
+    mVpcontent.setOffscreenPageLimit(2);
 
     //给ViewPager设置适配器
     mVpcontent.setAdapter(adapter);
@@ -179,5 +186,47 @@ public class FunctionActivity extends BaseActivity {
     }
   }
 
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+
+    if (resultCode == RESULT_OK) { //RESULT_OK = -1
+      Bundle bundle = data.getExtras();
+      String scanResult = bundle.getString("result");
+
+      scanResult = scanResult.substring(scanResult.indexOf("=") + 1);
+
+      LogUtil.e(scanResult);
+      //然后请求网络
+      RequestParams params = new RequestParams(UrlHelper.ERWEIMA_LOGIN);
+      params.addBodyParameter("code", scanResult);
+      params.addBodyParameter("request_type", "qrcodelogin");
+      params.addBodyParameter("user_name", SPFTools.SPHelper.getUserInfo().user_name);
+
+      mLoadDialog.show();
+      XutilsHelper.fetch(params, 1, new MyCallBack<String>() {
+
+        @Override
+        public void success(String result) throws JSONException {
+          mLoadDialog.dismiss();
+          JSONObject object = new JSONObject(result);
+          int code = object.getInt("code");
+          if (code != 1) {
+            UiTools.showToast(object.getString("error_mes"));
+          } else {
+            UiTools.showToast("网页登录成功");
+          }
+        }
+
+        @Override
+        public void fail() {
+          mLoadDialog.dismiss();
+        }
+
+      });
+      LogUtil.e("testurl" + params.getUri());
+
+    }
+  }
 
 }

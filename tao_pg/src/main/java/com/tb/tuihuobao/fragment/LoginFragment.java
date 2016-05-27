@@ -14,9 +14,9 @@ import com.tb.tuihuobao.login.LoginState;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.http.RequestParams;
-import org.xutils.view.annotation.Event;
-import org.xutils.view.annotation.ViewInject;
 
+import butterknife.Bind;
+import butterknife.OnClick;
 import comm.BaseFrag;
 import comm.BaseP;
 import comm.utils.DataTools;
@@ -29,113 +29,108 @@ import comm.utils.XutilsHelper;
 /**
  * Created by zxh on 2016/5/18.
  */
-public class LoginFragment extends BaseFrag{
+public class LoginFragment extends BaseFrag {
 
 
-  @ViewInject(R.id.tiy_uname)
-  private TextInputLayout mName;
+  @Bind(R.id.tiy_uname)
+  TextInputLayout mName;
 
-  @ViewInject(R.id.tiy_pwd)
-  private TextInputLayout mPwd;
+  @Bind(R.id.tiy_pwd)
+  TextInputLayout mPwd;
 
-  @Event({R.id.tv_reg_account,R.id.btn_login})
-  private void regAccount(View v) {
-    switch (v.getId()){
+  @OnClick({R.id.tv_reg_account, R.id.btn_login})
+  void regAccount(View v) {
+    switch (v.getId()) {
       case R.id.tv_reg_account:
-        UiTools.jumpTActivity(getContext(),RegFragment.class,null,null);
+        UiTools.jumpTActivity(getContext(), RegFragment.class, null, null);
 
         break;
       case R.id.btn_login:
 
         //登录
         final String name = mName.getEditText().getText().toString().trim();
-        final String pwd  = mPwd.getEditText().getText().toString().trim();
+        final String pwd = mPwd.getEditText().getText().toString().trim();
 
-        if(TextUtils.isEmpty(name)){
+        if (TextUtils.isEmpty(name)) {
           mName.setError("请输入用户名");
           return;
         }
 
-        if(TextUtils.isEmpty(pwd)){
+        if (TextUtils.isEmpty(pwd)) {
           mPwd.setError("请输入密码");
           return;
         }
 
-        if(!(DataTools.isFilter(name)&&DataTools.isFilter(pwd))){
+        if (!(DataTools.isFilter(name) && DataTools.isFilter(pwd))) {
           UiTools.showToast("请不要输入特殊字符");
           return;
         }
 
         //请求登录
         RequestParams params = new RequestParams(UrlHelper.LOGIN);
-        params.addBodyParameter("account",name);
+        params.addBodyParameter("account", name);
         params.addBodyParameter("pwd", MD5.GetMD5Code(pwd));
 
-        UiTools.showToast(name+pwd);
+        mLoading = UiTools.UIHelper.getLoadDialog2(getActivity());
 
-        XutilsHelper.fetch(params,1,new MyCallBack<String>(){
-          @Override
-          public void onSuccess(String result) {
+        XutilsHelper.fetch(params, 1, new MyCallBack<String>() {
+                  @Override
+                  public void success(String result) throws JSONException {
 
-            super.onSuccess(result);
+                    mLoading.dismiss();
+                    JSONObject jsonObject = new JSONObject(result);
+                    int code = jsonObject.getInt("code");
+                    String error_report = jsonObject.getString("error_report");
 
-            try {
-
-              JSONObject jsonObject = new JSONObject(result);
-              int code = jsonObject.getInt("code");
-              String error_report = jsonObject.getString("error_report");
-
-              if(code==1||code==4){
+                    if (code == 1 || code == 4) {
 
 
-                //设置为状态为登录状态
-                LoginContext.getInstance().setLoginState(new LoginState());
-                UiTools.showToast("登录成功");
+                      //设置为状态为登录状态
+                      LoginContext.getInstance().setLoginState(new LoginState(), getContext());
+                      UiTools.showToast("登录成功");
 
-                //储存用户名和密码
-                SPFTools.insertData(new String[]{"user_name","pwd"},new String[]{name,MD5.GetMD5Code(pwd)});
-
-
-                //缓存用户信息到本地
-                SPFTools.insertData(XutilsHelper.getResStr(R.string.user_info),jsonObject.
-                        getJSONObject("user_mes").toString());
-
-                if(getContext()!=null) {
+                      //储存用户名和密码
+                      SPFTools.insertData(new String[]{"user_name", "pwd"}, new String[]{name,
+                              pwd});
 
 
-                  //跳转到主界面
-                  UiTools.jumpActivity(getContext(), FunctionActivity.class,new String[]{"from_id"},
-                          new
-                          String[]{"login"});
+                      //缓存用户信息到本地
+                      SPFTools.insertData(XutilsHelper.getResStr(R.string.user_info), jsonObject.
+                              getJSONObject("user_mes").toString());
+
+                      if (getContext() != null) {
 
 
-                  //结束当前的活动
-                  getActivity().finish();
+                        //跳转到主界面
+                        UiTools.jumpActivity(getContext(), FunctionActivity.class, new
+                                String[]{"from_id"}, new String[]{"login"});
+
+
+                        //结束当前的活动
+                        getActivity().finish();
+                      }
+                    } else {
+                      //设置为状态为登录状态
+                      LoginContext.getInstance().setLoginState(new LoginState(), getContext());
+                      UiTools.showToast("验证失败" + error_report);
+
+                    }
+                  }
+
+                  @Override
+                  public void fail() {
+                    mLoading.dismiss();
+                  }
                 }
-              }else{
-                //设置为状态为登录状态
-                LoginContext.getInstance().setLoginState(new LoginState());
-                UiTools.showToast("验证失败"+error_report);
-
-              }
-
-
-            } catch (JSONException e) {
-              UiTools.showToast("数据出现了点小问题");
-              e.printStackTrace();
-            }
-          }
-        });
-
+        );
         break;
     }
-  }
 
+  }
 
 
   @Override
   public void initData(Bundle savedInstanceState) {
-
   }
 
   @Override

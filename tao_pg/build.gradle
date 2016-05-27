@@ -24,6 +24,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.android.support:design:23.2.0'
+    compile 'com.jakewharton:butterknife:7.0.0'
     compile 'org.xutils:xutils:3.3.22'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.github.lzyzsd:circleprogress:1.1.0@aar'
@@ -31,5 +32,6 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     compile 'com.android.support:percent:23.2.0'
+    compile 'com.google.zxing:core:3.2.1'
     compile project(':library')
 }

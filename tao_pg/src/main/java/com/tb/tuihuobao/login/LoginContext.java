@@ -29,8 +29,12 @@ public class LoginContext implements UserState{
   private UserState mUserSate = new LogoutState();
 
   //设置登录状态
-  public void setLoginState(UserState userState){
+  public void setLoginState(UserState userState,Context context){
       this.mUserSate = userState;
+      //如果是未登录的状态就跳转到登录
+      if(userState instanceof LogoutState){
+        mUserSate.tousu(context);
+      }
   }
 
 

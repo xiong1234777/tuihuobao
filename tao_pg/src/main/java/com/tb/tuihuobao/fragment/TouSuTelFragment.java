@@ -13,10 +13,10 @@ import com.tb.tuihuobao.bean.TelPhoneIfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xutils.view.annotation.ViewInject;
 
 import java.util.List;
 
+import butterknife.Bind;
 import comm.BaseFrag;
 import comm.BaseP;
 import comm.CommonAdapter;
@@ -29,12 +29,12 @@ import comm.utils.XutilsHelper;
  */
 public class TouSuTelFragment extends BaseFrag {
 
-  @ViewInject(R.id.lv_content)
-  private ListView mTelContent;
+  @Bind(R.id.lv_content)
+   ListView mTelContent;
 
   List<TelPhoneIfo> datas =null;
 
-  private CommonAdapter<TelPhoneIfo> mAdapter = null;
+   CommonAdapter<TelPhoneIfo> mAdapter = null;
 
   @Override
   public void initData(Bundle savedInstanceState) {
